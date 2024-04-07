@@ -1,4 +1,4 @@
-package com.example.mincal.events
+package com.example.mincal
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

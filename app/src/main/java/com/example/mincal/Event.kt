@@ -1,4 +1,4 @@
-package com.example.mincal.events
+package com.example.mincal
 
 import androidx.room.PrimaryKey
 import androidx.room.Entity
@@ -14,7 +14,7 @@ data class Event(
     val day: Int,
     val month: Int,
     val year: Int,
-    val endMi: Int,
+    val endM: Int,
     val endH: Int,
 
     )

@@ -1,16 +1,12 @@
-package com.example.mincal.events
+package com.example.mincal
 
-import androidx.lifecycle.LiveData
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
+import androidx.room.Dao
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import androidx.room.Upsert
 import androidx.room.Delete
 
-
-
-
+@Dao
 interface EventDao {
 
     @Upsert
