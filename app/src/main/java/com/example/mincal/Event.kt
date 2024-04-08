@@ -5,8 +5,7 @@ import androidx.room.Entity
 
 @Entity(tableName = "event_table")
 data class Event(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+
     val name: String,
     val location: String,
     val startM: Int,
@@ -16,5 +15,8 @@ data class Event(
     val year: Int,
     val endM: Int,
     val endH: Int,
+
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
 
     )

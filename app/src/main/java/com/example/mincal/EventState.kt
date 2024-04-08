@@ -11,6 +11,6 @@ data class EventState(
     val year: Int = -1,
     val endM: Int = -1,
     val endH: Int = -1,
-    val isAddingContact:Boolean = false,
+    val isAddingEvent:Boolean = false,
     val sortType: SortType = SortType.ALL_EVENTS
 )
