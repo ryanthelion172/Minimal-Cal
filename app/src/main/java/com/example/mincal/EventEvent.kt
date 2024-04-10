@@ -12,8 +12,8 @@ sealed interface EventEvent {
     data class SetYear(val year: Int): EventEvent
     data class SetDay(val day: Int): EventEvent
 
-    object ShowDialogue: EventEvent
-    object HideDialogue: EventEvent
+    object ShowDialog: EventEvent
+    object HideDialog: EventEvent
     data class SortEvents(val sortType:SortType): EventEvent
     data class DeleteEvent(val event: Event): EventEvent
 

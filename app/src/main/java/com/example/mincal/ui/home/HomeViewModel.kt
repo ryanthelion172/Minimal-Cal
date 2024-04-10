@@ -48,7 +48,7 @@ class HomeViewModel(
                     dao.deleteEvent(event.event)
                 }
             }
-            EventEvent.HideDialogue -> {
+            EventEvent.HideDialog -> {
                 _state.update { it.copy(
                     isAddingEvent = false
                 ) }
@@ -140,7 +140,7 @@ class HomeViewModel(
                     day = event.month
                 ) }
             }
-            EventEvent.ShowDialogue -> {
+            EventEvent.ShowDialog -> {
                 _state.update { it.copy(
                     isAddingEvent = true
                 ) }
