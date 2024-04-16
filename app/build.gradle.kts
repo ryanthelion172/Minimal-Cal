@@ -54,6 +54,7 @@ android {
 dependencies {
 
     val compose_ui_version = "1.6.5"
+    implementation("androidx.activity:activity-compose:1.4.0")
 
     implementation("androidx.compose.ui:ui:$compose_ui_version")
     implementation("androidx.compose.ui:ui-tooling-preview:$compose_ui_version")

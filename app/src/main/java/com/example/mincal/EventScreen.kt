@@ -29,7 +29,7 @@ fun EventScreen(
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add contact"
+                    contentDescription = "Add event"
                 )
             }
         },
@@ -69,7 +69,7 @@ fun EventScreen(
                     }
                 }
             }
-            items(state.events) { contact ->
+            items(state.events) { event ->
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -77,17 +77,17 @@ fun EventScreen(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = "${contact.startH}:${contact.startM} ${contact.name}",
+                            text = "${event.startH}:${event.startM} ${event.name}",
                             fontSize = 20.sp
                         )
-                        Text(text = contact.location, fontSize = 12.sp)
+                        Text(text = event.location, fontSize = 12.sp)
                     }
                     IconButton(onClick = {
-                        onEvent(EventEvent.DeleteEvent(contact))
+                        onEvent(EventEvent.DeleteEvent(event))
                     }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete contact"
+                            contentDescription = "Delete event"
                         )
                     }
                 }

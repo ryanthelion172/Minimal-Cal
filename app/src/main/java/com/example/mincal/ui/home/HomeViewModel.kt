@@ -26,7 +26,7 @@ class HomeViewModel(
         .flatMapLatest { sortType ->
             when(sortType) {
                 SortType.ALL_EVENTS -> dao.readAllData()
-                SortType.DAY_EVENTS -> dao.readDateData()
+               //SortType.DAY_EVENTS -> dao.readDateData()
                 SortType.ALL_NAME -> dao.readNameData()
 
             }
@@ -64,9 +64,9 @@ class HomeViewModel(
                 val endM = state.value.endM
                 val endH = state.value.endH
 
-                if(name.isBlank() || startH == -1 || day == -1|| month == -1|| year == -1|| startM == -1) {
-                    return
-                }
+                //if(name.isBlank() || startH == 0 || day == 0|| month == 0|| year == 0|| startM == 0) {
+                //    return
+                //}
 
                 val event = Event(
                     name = name,
@@ -86,13 +86,13 @@ class HomeViewModel(
                     isAddingEvent = false,
                     name = "",
                     location = "",
-                    startM = -1,
-                    startH = -1,
-                    day = -1,
-                    month = -1,
-                    year = -1,
-                    endM = -1,
-                    endH = -1
+                    startM = 1,
+                    startH = 1,
+                    day = 1,
+                    month = 1,
+                    year = 1,
+                    endM = 1,
+                    endH = 1
                 ) }
             }
             is EventEvent.SetName -> {
@@ -102,7 +102,7 @@ class HomeViewModel(
             }
             is EventEvent.SetLocation -> {
                 _state.update { it.copy(
-                    name = event.location
+                    location = event.location
                 ) }
             }
             is EventEvent.SetDay -> {
@@ -112,32 +112,32 @@ class HomeViewModel(
             }
             is EventEvent.SetEndH -> {
                 _state.update { it.copy(
-                    day = event.endH
+                    endH = event.endH
                 ) }
             }
             is EventEvent.SetStartH -> {
                 _state.update { it.copy(
-                    day = event.startH
+                    startH = event.startH
                 ) }
             }
             is EventEvent.SetEndM -> {
                 _state.update { it.copy(
-                    day = event.endM
+                    endM = event.endM
                 ) }
             }
             is EventEvent.SetStartM -> {
                 _state.update { it.copy(
-                    day = event.startM
+                    startM = event.startM
                 ) }
             }
             is EventEvent.SetYear -> {
                 _state.update { it.copy(
-                    day = event.year
+                    year = event.year
                 ) }
             }
             is EventEvent.SetMonth -> {
                 _state.update { it.copy(
-                    day = event.month
+                    month = event.month
                 ) }
             }
             EventEvent.ShowDialog -> {

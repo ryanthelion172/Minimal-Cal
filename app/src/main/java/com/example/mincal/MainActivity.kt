@@ -2,6 +2,8 @@ package com.example.mincal
 
 import android.os.Bundle
 import android.view.Menu
+import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -11,12 +13,68 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.foundation.layout.Column
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.example.mincal.databinding.ActivityMainBinding
+import com.example.mincal.ui.home.HomeViewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
+
+    private val db by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            EventDatabase::class.java,
+            "events.db"
+        ).build()
+    }
+    private val viewModel by viewModels<HomeViewModel>(
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return HomeViewModel(db.dao) as T
+                }
+            }
+        }
+    )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+        //    RoomGuideAndroidTheme {
+            val state by viewModel.state.collectAsState()
+            EventScreen(state = state, onEvent = viewModel::onEvent)
+        //    }
+        }
+    }
+}
+
+/*class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    private val db by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            EventDatabase::class.java,
+            "events.db"
+        ).build()
+    }
+    private val viewModel by viewModels<HomeViewModel>(
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return HomeViewModel(db.dao) as T
+                }
+            }
+        }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,4 +112,4 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-}
+}*/
