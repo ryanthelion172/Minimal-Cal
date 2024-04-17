@@ -53,6 +53,7 @@ android {
 
 dependencies {
 
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     val compose_ui_version = "1.6.5"
     implementation("androidx.activity:activity-compose:1.4.0")
 

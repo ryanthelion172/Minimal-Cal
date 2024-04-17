@@ -12,6 +12,9 @@ import com.example.mincal.SortType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.Calendar
+
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModel(
@@ -26,7 +29,7 @@ class HomeViewModel(
         .flatMapLatest { sortType ->
             when(sortType) {
                 SortType.ALL_EVENTS -> dao.readAllData()
-               //SortType.DAY_EVENTS -> dao.readDateData()
+                SortType.DAY_EVENTS -> dao.readPresentData(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
                 SortType.ALL_NAME -> dao.readNameData()
 
             }
@@ -64,9 +67,9 @@ class HomeViewModel(
                 val endM = state.value.endM
                 val endH = state.value.endH
 
-                //if(name.isBlank() || startH == 0 || day == 0|| month == 0|| year == 0|| startM == 0) {
-                //    return
-                //}
+                if(name.isBlank()) {
+                    return
+                }
 
                 val event = Event(
                     name = name,
@@ -86,13 +89,13 @@ class HomeViewModel(
                     isAddingEvent = false,
                     name = "",
                     location = "",
-                    startM = 1,
-                    startH = 1,
-                    day = 1,
-                    month = 1,
-                    year = 1,
-                    endM = 1,
-                    endH = 1
+                    startM = 0,
+                    startH = 0,
+                    day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
+                    month = Calendar.getInstance().get(Calendar.MONTH) + 1,
+                    year = Calendar.getInstance().get(Calendar.YEAR),
+                    endM = 0,
+                    endH = 0
                 ) }
             }
             is EventEvent.SetName -> {

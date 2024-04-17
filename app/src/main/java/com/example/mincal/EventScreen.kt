@@ -69,6 +69,7 @@ fun EventScreen(
                     }
                 }
             }
+
             items(state.events) { event ->
                 Row(
                     modifier = Modifier.fillMaxWidth()
@@ -76,8 +77,15 @@ fun EventScreen(
                     Column(
                         modifier = Modifier.weight(1f)
                     ) {
+                        val monthNames = arrayOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+                        val monthName = monthNames[event.month - 1] // Subtract 1 because array index starts from 0
                         Text(
-                            text = "${event.startH}:${event.startM} ${event.name}",
+                            text = "$monthName ${event.day}, ${event.year}",
+                            fontSize = 16.sp
+                        )
+                        Text(
+                            text = "${event.startH}:${if (event.startM < 10) "0${event.startM}" else event.startM}-${event.endH}:${if (event.endM < 10) "0${event.endM}" else event.endM} ${event.name}",
                             fontSize = 20.sp
                         )
                         Text(text = event.location, fontSize = 12.sp)

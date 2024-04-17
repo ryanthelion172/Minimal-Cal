@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mincal.EventScreen
 import com.example.mincal.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -27,7 +29,8 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        //val state by viewModel.state.collectAsState()
+        //EventScreen(state = state, onEvent = viewModel::onEvent)
         //val textView: TextView = binding.textHome
         //homeViewModel.text.observe(viewLifecycleOwner) {
         //    textView.text = it

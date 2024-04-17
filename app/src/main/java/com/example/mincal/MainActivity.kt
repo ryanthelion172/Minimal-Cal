@@ -59,22 +59,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
-    private val db by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            EventDatabase::class.java,
-            "events.db"
-        ).build()
-    }
-    private val viewModel by viewModels<HomeViewModel>(
-        factoryProducer = {
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                    return HomeViewModel(db.dao) as T
-                }
-            }
-        }
-    )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
