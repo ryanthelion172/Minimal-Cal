@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun AddEventDialog(
@@ -62,7 +64,7 @@ fun AddEventDialog(
                 )
                 Text("Month, Day and Year")
 
-                Row (
+                Row(
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     val months = listOf(
@@ -74,10 +76,11 @@ fun AddEventDialog(
                     var selectedMonth by remember { mutableIntStateOf(state.month) }
 
 // Dropdown for selecting month
-                    Box (
+                    Box(
                         modifier = Modifier
+                            .weight(1f) // Make the box fill available width
                             .background(Color.LightGray) // Set background color to gray
-                    ){
+                    ) {
                         Text(
                             text = months[selectedMonth - 1], // Adjust index to match array indices
                             modifier = Modifier
@@ -106,10 +109,10 @@ fun AddEventDialog(
 
                     var expandedDay by remember { mutableStateOf(false) }
                     var selectedDay by remember { mutableIntStateOf(state.day) }
-                    Box (
+                    Box(
                         modifier = Modifier
                             .background(Color.LightGray) // Set background color to gray
-                    ){
+                    ) {
                         Text(
                             text = selectedDay.toString(),
                             modifier = Modifier
@@ -138,10 +141,11 @@ fun AddEventDialog(
                     var expandedYear by remember { mutableStateOf(false) }
                     var selectedYear by remember { mutableIntStateOf(state.year) }
 
-                    Box (
+                    Box(
                         modifier = Modifier
+                            .weight(1f) // Make the box fill available width
                             .background(Color.LightGray) // Set background color to gray
-                    ){
+                    ) {
                         Text(
                             text = selectedYear.toString(),
                             modifier = Modifier
@@ -168,178 +172,170 @@ fun AddEventDialog(
                         }
                     }
                 }
-                Text("Start Time")
+                Row() {
+                    Spacer(modifier = Modifier.width(15.dp))
 
-                Row (
+                    Text("Start Time")
+                    Spacer(modifier = Modifier.width(110.dp))
+
+                    Text("End Time")
+                    Spacer(modifier = Modifier.width(15.dp))
+
+                }
+                Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    var expandedHour by remember { mutableStateOf(false) }
-                    var selectedHour by remember { mutableIntStateOf(state.startH) }
-
-                    var expandedMinute by remember { mutableStateOf(false) }
-                    var selectedMinute by remember { mutableIntStateOf(state.startM) }
-
-                    // Dropdown for selecting hour
-                    Box (
-                        modifier = Modifier
-                            .background(Color.LightGray) // Set background color to gray
-                    ){
-                        Text(
-                            text = selectedHour.toString(),
-                            modifier = Modifier
-                                .clickable(onClick = { expandedHour = true })
-                                .padding(16.dp)
-                        )
-
-                        DropdownMenu(
-                            expanded = expandedHour,
-                            onDismissRequest = { expandedHour = false },
-                            modifier = Modifier
-                                .width(100.dp)
-                                .background(Color.White)
-                        ) {
-                            for (hour in 0..23) {
-                                DropdownMenuItem(onClick = {
-                                    selectedHour = hour
-                                    onEvent(EventEvent.SetStartH(hour))
-                                    expandedHour = false
-                                }) {
-                                    Text(text = hour.toString())
-                                }
-                            }
-                        }
-                    }
-
-                    // Dropdown for selecting minute
-                    Box (
-                        modifier = Modifier
-                            .background(Color.LightGray) // Set background color to gray
-                    ){
-                        Text(
-                            text = selectedMinute.toString(),
-                            modifier = Modifier
-                                .clickable(onClick = { expandedMinute = true })
-                                .padding(16.dp)
-                        )
-
-                        DropdownMenu(
-                            expanded = expandedMinute,
-                            onDismissRequest = { expandedMinute = false },
-                            modifier = Modifier
-                                .width(100.dp)
-                                .background(Color.White)
-                        ) {
-                            for (minute in 0..59) {
-                                DropdownMenuItem(onClick = {
-                                    selectedMinute = minute
-                                    onEvent(EventEvent.SetStartM(minute))
-                                    expandedMinute = false
-                                }) {
-                                    Text(text = minute.toString())
-                                }
-                            }
-                        }
-                    }
-                    /*
-                    TextField(
-                        value = state.startH.toString(),
-                        onValueChange = {
-                            val intValue = it.toIntOrNull()
-                            if (intValue != null) {
-                                onEvent(EventEvent.SetStartH(intValue))
-                            }
-                        },
-                        placeholder = {
-                            Text(text = "Hour")
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth(0.49f)
-                    )
-                    TextField(
-                        value = "",
-                        onValueChange = {
-                            val intValue = it.toIntOrNull()
-                            if (intValue != null) {
-                                onEvent(EventEvent.SetStartM(intValue))
-                            }
-                        },
-                        placeholder = {
-                            Text(text = "Minute")
-                        }
-                    )*/
-                }
-                Text("End time")
-                Row (
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    var expandedEndHour by remember { mutableStateOf(false) }
-                    var selectedEndHour by remember { mutableIntStateOf(state.endH) }
-
-                    var expandedEndMinute by remember { mutableStateOf(false) }
-                    var selectedEndMinute by remember { mutableIntStateOf(state.endM) }
-
-// Dropdown for selecting end hour
-                    Box(
-                        modifier = Modifier
-                            .background(Color.LightGray) // Set background color to gray
+                    // Start time components
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier.weight(1f)
                     ) {
-                        Text(
-                            text = selectedEndHour.toString(),
-                            modifier = Modifier
-                                .clickable(onClick = { expandedEndHour = true })
-                                .padding(16.dp)
-                        )
+                        var expandedHour by remember { mutableStateOf(false) }
+                        var selectedHour by remember { mutableIntStateOf(state.startH) }
 
-                        DropdownMenu(
-                            expanded = expandedEndHour,
-                            onDismissRequest = { expandedEndHour = false },
+                        var expandedMinute by remember { mutableStateOf(false) }
+                        var selectedMinute by remember { mutableIntStateOf(state.startM) }
+                        // Dropdown for selecting hour
+                        Box(
                             modifier = Modifier
-                                .width(100.dp)
-                                .background(Color.White)
+                                .background(Color.LightGray) // Set background color to gray
                         ) {
-                            for (hour in 0..23) {
-                                DropdownMenuItem(onClick = {
-                                    selectedEndHour = hour
-                                    onEvent(EventEvent.SetEndH(hour))
-                                    expandedEndHour = false
-                                }) {
-                                    Text(text = hour.toString())
+                            Text(
+                                text = selectedHour.toString(),
+                                modifier = Modifier
+                                    .clickable(onClick = { expandedHour = true })
+                                    .padding(16.dp)
+                            )
+
+                            DropdownMenu(
+                                expanded = expandedHour,
+                                onDismissRequest = { expandedHour = false },
+                                modifier = Modifier
+                                    .width(100.dp)
+                                    .background(Color.White)
+                            ) {
+                                for (hour in 0..23) {
+                                    DropdownMenuItem(onClick = {
+                                        selectedHour = hour
+                                        onEvent(EventEvent.SetStartH(hour))
+                                        expandedHour = false
+                                    }) {
+                                        Text(text = hour.toString())
+                                    }
+                                }
+                            }
+                        }
+                        Text(":", fontSize = 37.sp)
+
+                        // Dropdown for selecting minute
+                        Box(
+                            modifier = Modifier
+                                .background(Color.LightGray) // Set background color to gray
+                        ) {
+                            Text(
+                                text = selectedMinute.toString(),
+                                modifier = Modifier
+                                    .clickable(onClick = { expandedMinute = true })
+                                    .padding(16.dp)
+                            )
+
+                            DropdownMenu(
+                                expanded = expandedMinute,
+                                onDismissRequest = { expandedMinute = false },
+                                modifier = Modifier
+                                    .width(100.dp)
+                                    .background(Color.White)
+                            ) {
+                                for (minute in 0..59) {
+                                    DropdownMenuItem(onClick = {
+                                        selectedMinute = minute
+                                        onEvent(EventEvent.SetStartM(minute))
+                                        expandedMinute = false
+                                    }) {
+                                        Text(text = minute.toString())
+                                    }
                                 }
                             }
                         }
                     }
 
-// Dropdown for selecting end minute
-                    Box(
-                        modifier = Modifier
-                            .background(Color.LightGray) // Set background color to gray
+                    // End time components
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.weight(1f)
                     ) {
-                        Text(
-                            text = selectedEndMinute.toString(),
-                            modifier = Modifier
-                                .clickable(onClick = { expandedEndMinute = true })
-                                .padding(16.dp)
-                        )
+                        var expandedEndHour by remember { mutableStateOf(false) }
+                        var selectedEndHour by remember { mutableIntStateOf(state.endH) }
 
-                        DropdownMenu(
-                            expanded = expandedEndMinute,
-                            onDismissRequest = { expandedEndMinute = false },
+                        var expandedEndMinute by remember { mutableStateOf(false) }
+                        var selectedEndMinute by remember { mutableIntStateOf(state.endM) }
+                        // Dropdown for selecting end hour
+                        Box(
                             modifier = Modifier
-                                .width(100.dp)
-                                .background(Color.White)
+                                .background(Color.LightGray) // Set background color to gray
                         ) {
-                            for (minute in 0..59) {
-                                DropdownMenuItem(onClick = {
-                                    selectedEndMinute = minute
-                                    onEvent(EventEvent.SetEndM(minute))
-                                    expandedEndMinute = false
-                                }) {
-                                    Text(text = minute.toString())
+                            Text(
+                                text = selectedEndHour.toString(),
+                                modifier = Modifier
+                                    .clickable(onClick = { expandedEndHour = true })
+                                    .padding(16.dp)
+                            )
+
+                            DropdownMenu(
+                                expanded = expandedEndHour,
+                                onDismissRequest = { expandedEndHour = false },
+                                modifier = Modifier
+                                    .width(100.dp)
+                                    .background(Color.White)
+                            ) {
+                                for (hour in 0..23) {
+                                    DropdownMenuItem(onClick = {
+                                        selectedEndHour = hour
+                                        onEvent(EventEvent.SetEndH(hour))
+                                        expandedEndHour = false
+                                    }) {
+                                        Text(text = hour.toString())
+                                    }
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        Text(":", fontSize = 37.sp)
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        // Dropdown for selecting end minute
+                        Box(
+                            modifier = Modifier
+
+                                .background(Color.LightGray) // Set background color to gray
+                        ) {
+                            Text(
+                                text = selectedEndMinute.toString(),
+                                modifier = Modifier
+                                    .clickable(onClick = { expandedEndMinute = true })
+                                    .padding(16.dp)
+                            )
+
+                            DropdownMenu(
+                                expanded = expandedEndMinute,
+                                onDismissRequest = { expandedEndMinute = false },
+                                modifier = Modifier
+                                    .width(100.dp)
+                                    .background(Color.White)
+                            ) {
+                                for (minute in 0..59) {
+                                    DropdownMenuItem(onClick = {
+                                        selectedEndMinute = minute
+                                        onEvent(EventEvent.SetEndM(minute))
+                                        expandedEndMinute = false
+                                    }) {
+                                        Text(text = minute.toString())
+                                    }
                                 }
                             }
                         }
                     }
-
                 }
 
             }

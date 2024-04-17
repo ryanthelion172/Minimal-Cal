@@ -17,12 +17,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.foundation.layout.Column
 import androidx.activity.compose.setContent
+import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.mincal.databinding.ActivityMainBinding
 import com.example.mincal.ui.home.HomeViewModel
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -46,7 +54,53 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-        //    RoomGuideAndroidTheme {
+            val scaffoldState = rememberScaffoldState()
+            val scope = rememberCoroutineScope()
+            Scaffold(
+                scaffoldState = scaffoldState,
+                topBar = {
+                    AppBar(
+                        onNavigationIconClick = {
+                            scope.launch {
+                                scaffoldState.drawerState.open()
+                            }
+                        }
+                    )
+                },
+                drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+                drawerContent = {
+                    DrawerHeader()
+                    DrawerBody(
+                        items = listOf(
+                            MenuItem(
+                                id = "home",
+                                title = "Events",
+                                contentDescription = "Go to event screen",
+                                icon = Icons.Default.Home
+                            ),
+                            MenuItem(
+                                id = "settings",
+                                title = "Daily",
+                                contentDescription = "Go to daily screen",
+                                icon = Icons.Default.Settings
+                            ),
+                            MenuItem(
+                                id = "help",
+                                title = "Month",
+                                contentDescription = "Go to Month Screen",
+                                icon = Icons.Default.Info
+                            ),
+                        ),
+                        onItemClick = {
+                            println("Clicked on ${it.title}")
+                        }
+                    )
+                }
+            ) {
+
+            }
+
+            //    RoomGuideAndroidTheme {
             val state by viewModel.state.collectAsState()
             EventScreen(state = state, onEvent = viewModel::onEvent)
         //    }
