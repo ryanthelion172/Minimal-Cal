@@ -151,9 +151,11 @@ class HomeViewModel(
             is EventEvent.SortEvents -> {
                 _sortType.value = event.sortType
             }
+            is EventEvent.SortDayEvents -> {
+                println("this should never be called")
+            }
         }
     }
-
 }
 
 //class HomeViewModel : ViewModel() {

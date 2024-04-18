@@ -14,5 +14,9 @@ data class EventState(
     val endM: Int = 0,
     val endH: Int = 0,
     val isAddingEvent:Boolean = false,
-    val sortType: SortType = SortType.ALL_EVENTS
+    val sortType: SortType = SortType.ALL_EVENTS,
+
+    var sortDaysInMonth: SortDaysInMonth = SortDaysInMonth.DAY_17,
+    var sortMonthsInYear: SortMonthsInYear = SortMonthsInYear.MONTH_4,
+    var sortYears: SortYears = SortYears.YEAR_2024
 )

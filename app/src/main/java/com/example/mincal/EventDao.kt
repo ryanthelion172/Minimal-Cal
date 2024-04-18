@@ -24,6 +24,6 @@ interface EventDao {
     @Query("SELECT * FROM event_table ORDER BY name ASC")
     fun readNameData(): Flow<List<Event>>
 
-    @Query("SELECT * FROM event_table WHERE year = 2024 ORDER BY startH, startM DESC")
-    fun readDateData(): Flow<List<Event>>
+    @Query("SELECT * FROM event_table WHERE year = :currentYear AND month = :currentMonth AND day = :currentDay ORDER BY year, month, day, startH, startM DESC")
+    fun readDateData(currentYear: Int, currentMonth: Int, currentDay: Int): Flow<List<Event>>
 }

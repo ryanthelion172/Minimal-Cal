@@ -15,6 +15,7 @@ sealed interface EventEvent {
     object ShowDialog: EventEvent
     object HideDialog: EventEvent
     data class SortEvents(val sortType:SortType): EventEvent
+    data class SortDayEvents(val daysInMonth: SortDaysInMonth, val monthsInYear: SortMonthsInYear, val years: SortYears): EventEvent
     data class DeleteEvent(val event: Event): EventEvent
 
 

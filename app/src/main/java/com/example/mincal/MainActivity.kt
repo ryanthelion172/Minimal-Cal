@@ -17,8 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.foundation.layout.Column
 import androidx.activity.compose.setContent
+import androidx.compose.material.DrawerState
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
@@ -29,6 +32,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.mincal.databinding.ActivityMainBinding
+import com.example.mincal.ui.gallery.GalleryViewModel
 import com.example.mincal.ui.home.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -41,11 +45,11 @@ class MainActivity : ComponentActivity() {
             "events.db"
         ).build()
     }
-    private val viewModel by viewModels<HomeViewModel>(
+    private val viewModel by viewModels<GalleryViewModel>(
         factoryProducer = {
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return HomeViewModel(db.dao) as T
+                    return GalleryViewModel(db.dao) as T
                 }
             }
         }
@@ -73,25 +77,31 @@ class MainActivity : ComponentActivity() {
                     DrawerBody(
                         items = listOf(
                             MenuItem(
-                                id = "home",
+                                id = "events",
                                 title = "Events",
                                 contentDescription = "Go to event screen",
-                                icon = Icons.Default.Home
+                                icon = Icons.Default.Check
                             ),
                             MenuItem(
-                                id = "settings",
+                                id = "daily",
                                 title = "Daily",
                                 contentDescription = "Go to daily screen",
-                                icon = Icons.Default.Settings
+                                icon = Icons.Default.DateRange
                             ),
                             MenuItem(
-                                id = "help",
-                                title = "Month",
+                                id = "month",
+                                title = "Monthly",
                                 contentDescription = "Go to Month Screen",
-                                icon = Icons.Default.Info
+                                icon = Icons.Default.DateRange
                             ),
                         ),
                         onItemClick = {
+                            println("Clicked on ${it.title}")
+                            when (it.id) {
+                                "events" -> navigateToFragment(R.id.nav_home, scaffoldState.drawerState)
+                                "daily" -> navigateToFragment(R.id.nav_gallery, scaffoldState.drawerState)
+                                "month" -> navigateToFragment(R.id.nav_slideshow, scaffoldState.drawerState)
+                            }
                             println("Clicked on ${it.title}")
                         }
                     )
@@ -100,12 +110,33 @@ class MainActivity : ComponentActivity() {
 
             }
 
-            //    RoomGuideAndroidTheme {
             val state by viewModel.state.collectAsState()
-            EventScreen(state = state, onEvent = viewModel::onEvent)
-        //    }
+            DailyScreen(state = state, onEvent = viewModel::onEvent)
         }
     }
+
+    private fun navigateToFragment(fragmentId: Int, drawerState: DrawerState) {
+        // Get the NavController
+        println( R.id.nav_host_fragment_content_main)
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+
+        // Navigate to the specified fragment
+        navController.navigate(fragmentId)
+
+        // Close the drawer (optional)
+        //drawerState.close()
+    }
+
+    /*private fun navigateToFragment(fragmentId: Int) {
+        // Get the NavController
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+
+        // Navigate to the specified fragment
+        navController.navigate(fragmentId)
+
+        // Close the drawer (optional)
+        // drawerState.close()
+    }*/
 }
 
 /*class MainActivity : AppCompatActivity() {
