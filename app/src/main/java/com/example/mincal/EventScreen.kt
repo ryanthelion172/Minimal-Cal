@@ -9,20 +9,25 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.launch
 
 @Composable
 fun EventScreen(
     state: EventState,
     onEvent: (EventEvent) -> Unit
 ) {
-    Scaffold(
+    /*Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 onEvent(EventEvent.ShowDialog)
@@ -33,6 +38,68 @@ fun EventScreen(
                 )
             }
         },
+    ) { _ ->*/
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
+    val navController = rememberNavController()
+
+
+
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            AppBar(
+                onNavigationIconClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                }
+            )
+        },
+        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+        drawerContent = {
+            DrawerHeader()
+            DrawerBody(
+                items = listOf(
+                    MenuItem(
+                        id = "events",
+                        title = "Events",
+                        contentDescription = "Go to event screen",
+                        icon = Icons.Default.Check
+                    ),
+                    MenuItem(
+                        id = "daily",
+                        title = "Daily",
+                        contentDescription = "Go to daily screen",
+                        icon = Icons.Default.DateRange
+                    ),
+                    /*MenuItem(
+                        id = "month",
+                        title = "Monthly",
+                        contentDescription = "Go to Month Screen",
+                        icon = Icons.Default.DateRange
+                    ),*/
+                ),
+                onItemClick = {
+                    when (it.id) {
+                        "events" -> navigateToFragment(R.id.nav_home, scaffoldState.drawerState, navController)
+                        "daily" -> navigateToFragment(R.id.nav_gallery, scaffoldState.drawerState, navController)
+                        //"month" -> navigateToFragment(R.id.nav_slideshow, scaffoldState.drawerState)
+                    }
+                    println("Clicked on ${it.title}")
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                onEvent(EventEvent.ShowDialog)
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add event"
+                )
+            }
+        }
     ) { _ ->
         if(state.isAddingEvent) {
             AddEventDialog(state = state, onEvent = onEvent)

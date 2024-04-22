@@ -60,10 +60,18 @@ class GalleryViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())*/
 
     private val _state = MutableStateFlow(EventState())
-    val state = combine(_state, _sortType, _events) { state, sortType, events ->
+    val state = combine(
+        _state, _sortType, _events,
+        combine(_day, _month, _year) { day, month, year ->
+            Triple(day, month, year)
+        }
+    ) { state, sortType, events, (day, month, year)->
         state.copy(
             events = events,
-            sortType = sortType
+            sortType = sortType,
+            sortDaysInMonth = day,
+            sortMonthsInYear = month,
+            sortYears = year
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), EventState())
 

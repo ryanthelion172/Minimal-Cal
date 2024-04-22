@@ -10,11 +10,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -22,13 +25,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+//import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
+import kotlinx.coroutines.launch
+import androidx.compose.ui.text.TextStyle
 
 @Composable
 fun DailyScreen(
     state: EventState,
     onEvent: (EventEvent) -> Unit
 ) {
-    Scaffold(
+    /*Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 onEvent(EventEvent.ShowDialog)
@@ -39,6 +48,68 @@ fun DailyScreen(
                 )
             }
         },
+    ) { _ ->*/
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
+    val navController = rememberNavController()
+
+
+
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            AppBar(
+                onNavigationIconClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                }
+            )
+        },
+        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+        drawerContent = {
+            DrawerHeader()
+            DrawerBody(
+                items = listOf(
+                    MenuItem(
+                        id = "events",
+                        title = "Events",
+                        contentDescription = "Go to event screen",
+                        icon = Icons.Default.Check
+                    ),
+                    MenuItem(
+                        id = "daily",
+                        title = "Daily",
+                        contentDescription = "Go to daily screen",
+                        icon = Icons.Default.DateRange
+                    ),
+                    /*MenuItem(
+                        id = "month",
+                        title = "Monthly",
+                        contentDescription = "Go to Month Screen",
+                        icon = Icons.Default.DateRange
+                    ),*/
+                ),
+                onItemClick = {
+                    when (it.id) {
+                        "events" -> navigateToFragment(R.id.nav_home, scaffoldState.drawerState, navController)
+                        "daily" -> navigateToFragment(R.id.nav_gallery, scaffoldState.drawerState, navController)
+                        //"month" -> navigateToFragment(R.id.nav_slideshow, scaffoldState.drawerState)
+                    }
+                    println("Clicked on ${it.title}")
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                onEvent(EventEvent.ShowDialog)
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add event"
+                )
+            }
+        }
     ) { _ ->
         if(state.isAddingEvent) {
             AddEventDialog(state = state, onEvent = onEvent)
@@ -69,7 +140,8 @@ fun DailyScreen(
                                 modifier = Modifier
                                     .clickable(onClick = { isExpandedMonths = true })
                                     .padding(16.dp)
-                                    .background(Color.LightGray) // Set background color to gray
+                                    .background(Color.White), // Set background color to gray
+                                style = TextStyle(fontSize = 20.sp) // Adjust the font size as needed
 
                             )
                             DropdownMenu(
@@ -115,7 +187,8 @@ fun DailyScreen(
                                 modifier = Modifier
                                     .clickable(onClick = { isExpandedDays = true })
                                     .padding(16.dp)
-                                    .background(Color.LightGray) // Set background color to gray
+                                    .background(Color.White), // Set background color to gray
+                                style = TextStyle(fontSize = 20.sp) // Adjust the font size as needed
 
                             )
                             // Dropdown box for SortDaysInMonth enum
@@ -149,7 +222,8 @@ fun DailyScreen(
                                 modifier = Modifier
                                     .clickable(onClick = { isExpandedYears = true })
                                     .padding(16.dp)
-                                    .background(Color.LightGray) // Set background color to gray
+                                    .background(Color.White), // Set background color to gray
+                                style = TextStyle(fontSize = 20.sp) // Adjust the font size as needed
 
                             )
                             // Dropdown box for SortYears enum
@@ -228,4 +302,16 @@ fun DailyScreen(
             }
         }
     }
+}
+
+fun navigateToFragment(fragmentId: Int, drawerState: DrawerState, navController: NavController) {
+// Get the NavController
+    // Navigate to the specified fragment
+    if (navController.currentDestination != null) {
+
+        navController.navigate(fragmentId)
+    }
+    // Close the drawer (optional)
+    //drawerState.close()
+
 }
